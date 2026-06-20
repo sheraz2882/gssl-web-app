@@ -1,0 +1,121 @@
+.header{
+  background-color: #0f6e56;
+  padding: 10px 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.ticker-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ticker-track {
+  display: inline-flex;
+  gap: 60px;
+  animation: ticker 18s linear infinite;
+}
+
+.ticker-track span {
+  color: #e1f5ee;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Body layout: place heading full-width and images in one row, two columns */
+.body{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  align-items: start;
+  padding: 24px;
+}
+
+.league-title{
+  grid-column: 1 / -1;
+  margin: 20px 0 12px 0;
+  font-size: 1.8rem;
+}
+
+.body img{
+  width: 100%;
+  height: 710px;
+  display: block;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+@media (max-width: 640px){
+  .body{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Blink animation for league title in the ticker */
+.league-title{
+  color: #ff0000;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+  animation: blink 1s steps(2,start) infinite;
+}
+
+@keyframes blink{
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@media (max-width: 640px){
+  .body img{
+    height: 710px;
+  }
+}
+
+/* Registration section and button */
+.registration-section{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+}
+
+.registration-section .league-title{
+  margin: 0;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.registration-button{
+  width: min(360px, 100%);
+  max-width: 420px;
+  background: linear-gradient(90deg, #0f6e56 0%, #0b5b46 100%);
+  color: #ffffff;
+  border: none;
+  margin-top: 12px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(11,91,70,0.12);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+.registration-button:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(11,91,70,0.18);
+  filter: brightness(1.03);
+}
+
+.registration-button:active{
+  transform: translateY(0);
+}
+
+.registration-button:focus{
+  outline: 3px solid rgba(15,110,86,0.18);
+  outline-offset: 3px;
+}
