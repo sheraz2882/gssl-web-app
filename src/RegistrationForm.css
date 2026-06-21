@@ -31,10 +31,15 @@
 }
 
 .registration-form input{
-  padding: 12px 6px;
+  width: 100%;
+  padding: 12px 10px;
   border: 1px solid #ccd8d2;
   border-radius: 10px;
   font-size: 1rem;
+}
+
+.registration-form input[type="file"] {
+  width: 100%;
 }
 
 .registration-form select{
@@ -49,6 +54,35 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   cursor: pointer;
+}
+
+.fieldError {
+  color: #d0473b;
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+.inputError {
+  border-color: #d0473b;
+  box-shadow: 0 0 0 3px rgba(208, 71, 59, 0.1);
+}
+
+.fileUpload {
+  display: grid;
+  gap: 8px;
+}
+
+.fileName {
+  font-size: 0.95rem;
+  color: #4b5b51;
+}
+
+.radioLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: #2b4a40;
 }
 
 .gssl-logo{
