@@ -1,0 +1,123 @@
+.row{
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr);
+  gap: 12px;
+  padding: 24px;
+}
+
+.registration-col,
+.tournament-logo-col{
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 14px 40px rgba(15,110,86,0.08);
+}
+
+.registration-form h2{
+  margin-top: 0;
+  margin-bottom: 18px;
+  font-size: 1.8rem;
+  color: #0f6e56;
+}
+
+.registration-form form{
+  display: grid;
+  gap: 16px;
+}
+
+.registration-form label{
+  font-weight: 600;
+  color: #2b4a40;
+}
+
+.registration-form input{
+  padding: 12px 6px;
+  border: 1px solid #ccd8d2;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.registration-form select{
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccd8d2;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: #ffffff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath fill='%234b5b51' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E") no-repeat right 14px center;
+  background-size: 10px 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+}
+
+.gssl-logo{
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  object-fit: contain;
+  border-radius: 14px;
+  margin-bottom: 20px;
+}
+
+.tournament-logo-col h3{
+  margin: 0 0 10px;
+  font-size: 1.75rem;
+  color: #0f6e56;
+}
+
+.tournament-logo-col p{
+  margin: 0;
+  line-height: 1.6;
+  color: #4b5b51;
+}
+
+.playerType {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.registration-form input[type="file"] {
+  width: 100%;
+  padding: 12px 0px 12px 6px;
+  border: 1px solid #ccd8d2;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #2b4a40;
+}
+
+.registration-form input[type="file"]::file-selector-button {
+  background-color: #0f6e56;
+  color: #ffffff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.registration-form input[type="file"]::file-selector-button:hover {
+  background-color: #0d5845;
+}
+
+.submitButton {
+  background-color: #0f6e56;
+  color: #ffffff;
+  padding: 12px 20px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.submitButton:hover {
+  background-color: #0d5845;
+}
+@media (max-width: 880px){
+  .row{
+    grid-template-columns: 1fr;
+  }
+}

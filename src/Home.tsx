@@ -2,8 +2,10 @@ import React from 'react';
 import './css/Home.css';
 import leagueInfoImage from './assets/league-info.jpg';
 import seasonInfoImage from './assets/season-info.jpg';
+import { Link } from 'react-router';
 
-function Header(){
+
+export const Header = () => {
     return (
         <header className="header">
             <div className="ticker-wrapper">
@@ -22,7 +24,13 @@ function RegistrationButton(){
     return (
         <div className="registration-section">
             <h1 className="league-title">Welcome to Golra Station Super League 2026!</h1>
-            <button className="registration-button">Register Now</button>
+            <button className="registration-button"
+            onClick={
+                () => {
+                    // Handle registration button click
+                    window.location.href = '/register';
+                }
+            }>Register Now</button>
         </div>
     );
 }
