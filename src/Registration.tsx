@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 import { Header } from './Home';
+import {
+  databases,
+  storage,
+  storageBucketId,
+  databaseId,
+  registrationCollectionId,
+} from './appwrite/config.ts';
+
+import { ID, Permission, Role } from 'appwrite';
 import gsslLogo from './assets/gssl-logo.jpg';
 import './RegistrationForm.css';
 
 type FormState = {
   name: string;
+  cnicNumber: string;
   mobile: string;
   city: string;
   playerType: string;
@@ -18,6 +28,7 @@ type FormErrors = Partial<Record<keyof FormState, string>>;
 function RegistrationForm() {
   const [form, setForm] = useState<FormState>({
     name: '',
+    cnicNumber: '',
     mobile: '',
     city: '',
     playerType: '',
@@ -26,12 +37,18 @@ function RegistrationForm() {
     receipt: null,
   });
   const [errors, setErrors] = useState<FormErrors>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
 
   const validate = (): FormErrors => {
     const nextErrors: FormErrors = {};
 
     if (!form.name.trim()) {
       nextErrors.name = 'Please enter your name.';
+    }
+
+    if (!form.cnicNumber.trim()) {
+      nextErrors.cnicNumber = 'Please enter your CNIC number.';
     }
 
     if (!form.mobile.trim()) {
@@ -63,9 +80,11 @@ function RegistrationForm() {
     return nextErrors;
   };
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const target = e.target;
-    const { name, type, value, files } = target;
+    const { name, type, value, files } = target as HTMLInputElement;
     const nextValue = type === 'file' ? files?.[0] ?? null : value;
 
     setForm((prev) => ({
@@ -82,7 +101,21 @@ function RegistrationForm() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const uploadFile = async (file: File) => {
+    return storage.createFile(
+      storageBucketId,
+      ID.unique(),
+      file,
+      [
+      Permission.read(Role.any()),
+      Permission.write(Role.any()),
+      Permission.update(Role.any()),
+      Permission.delete(Role.any()),
+    ]
+    );
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const nextErrors = validate();
 
@@ -91,7 +124,54 @@ function RegistrationForm() {
       return;
     }
 
-    alert('Registration submitted successfully!');
+    setSubmitting(true);
+    setSubmitMessage(null);
+
+    try {
+      const [pictureFile, cnicFile, receiptFile] = await Promise.all([
+        uploadFile(form.picture as File),
+        uploadFile(form.cnic as File),
+        uploadFile(form.receipt as File),
+      ]);
+
+      await databases.createDocument(
+        databaseId,
+        registrationCollectionId,
+        ID.unique(),
+        {
+          username: form.name.trim(),
+          user_cnic: form.cnicNumber.trim(),
+          mobilenumber: form.mobile.trim(),
+          city: form.city,
+          playerType: form.playerType,
+          user_picture: pictureFile.$id,
+          cnic_picture: cnicFile.$id,
+          payment_picture: receiptFile.$id,
+        },
+      );
+
+      setSubmitMessage('Registration submitted successfully to Appwrite.');
+      setForm({
+        name: '',
+        cnicNumber: '',
+        mobile: '',
+        city: '',
+        playerType: '',
+        picture: null,
+        cnic: null,
+        receipt: null,
+      });
+      setErrors({});
+    } catch (error) {
+      console.error('Appwrite submit error', error);
+      setSubmitMessage(
+        error instanceof Error
+          ? error.message
+          : 'Unable to submit registration. Please try again.',
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -109,6 +189,18 @@ function RegistrationForm() {
           className={errors.name ? 'inputError' : ''}
         />
         {errors.name && <div className="fieldError">{errors.name}</div>}
+
+        <label htmlFor="cnicNumber">CNIC Number:</label>
+        <input
+          id="cnicNumber"
+          type="text"
+          name="cnicNumber"
+          value={form.cnicNumber}
+          onChange={handleChange}
+          placeholder="Enter your CNIC number"
+          className={errors.cnicNumber ? 'inputError' : ''}
+        />
+        {errors.cnicNumber && <div className="fieldError">{errors.cnicNumber}</div>}
 
         <label htmlFor="mobile">Mobile Number:</label>
         <input
@@ -221,10 +313,11 @@ function RegistrationForm() {
         </div>
         {errors.receipt && <div className="fieldError">{errors.receipt}</div>}
 
-        <button type="submit" className="submitButton">
-          Submit Registration
+        <button type="submit" className="submitButton" disabled={submitting}>
+          {submitting ? 'Submitting...' : 'Submit Registration'}
         </button>
       </form>
+      {submitMessage && <div className="submitMessage">{submitMessage}</div>}
     </div>
   );
 }
