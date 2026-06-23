@@ -56,6 +56,17 @@
   }
 }
 
+@media (max-width: 480px) {
+  .body {
+    padding: 16px 12px;
+  }
+
+  .body img {
+    width: 100%;
+    max-height: 260px;
+  }
+}
+
 /* Blink animation for league title in the ticker */
 .league-title{
   color: #ff0000;
@@ -71,7 +82,47 @@
 
 @media (max-width: 640px){
   .body img{
-    height: 710px;
+    height: auto;
+    max-height: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 8px 0;
+  }
+
+  .ticker-track {
+    gap: 24px;
+  }
+
+  .ticker-track span {
+    font-size: 14px;
+  }
+
+  .body {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .league-title {
+    font-size: 1.4rem;
+    margin: 14px 0 10px;
+  }
+
+  .body img {
+    max-height: 710px;
+  }
+
+  .registration-section {
+    padding: 16px;
+  }
+
+  .registration-button {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 16px;
+    font-size: 0.95rem;
   }
 }
 

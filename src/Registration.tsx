@@ -250,16 +250,7 @@ function RegistrationForm() {
             />
             Bowler
           </label>
-          <label className="radioLabel">
-            <input
-              type="radio"
-              name="playerType"
-              value="allrounder"
-              checked={form.playerType === 'allrounder'}
-              onChange={handleChange}
-            />
-            All-Rounder
-          </label>
+          
         </div>
         {errors.playerType && (
           <div className="fieldError">{errors.playerType}</div>
@@ -327,14 +318,16 @@ export const RegistrationComponent = () => {
     <div>
       <Header />
       <div className="row">
-        <div className="registration-col">
-          <RegistrationForm />
-        </div>
         <div className="tournament-logo-col">
           <img src={gsslLogo} alt="GSSL Logo" className="gssl-logo" />
           <h3>Golra Station Super League 2026</h3>
           <p>Register now to participate in the upcoming season!</p>
         </div>
+        
+        <div className="registration-col">
+          <RegistrationForm />
+        </div>
+        
       </div>
     </div>
   );
