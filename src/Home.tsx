@@ -1,8 +1,6 @@
-import React from 'react';
 import './css/Home.css';
 import leagueInfoImage from './assets/league-info.jpg';
 import seasonInfoImage from './assets/season-info.jpg';
-import { Link } from 'react-router';
 
 
 export const Header = () => {

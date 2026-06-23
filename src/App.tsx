@@ -1,4 +1,3 @@
-import React from 'react';
 import { HomeComponent } from './Home';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { RegistrationComponent } from './Registration';
