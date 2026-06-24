@@ -313,17 +313,70 @@ function RegistrationForm() {
   );
 }
 
+function PaymentRegistration() {
+  return (
+    <div className="payment-registration">
+      <div className="payment-header">
+        <span className="payment-lock-icon">🔒</span>
+        <div>
+          <h3>Registration Payment Rs.200</h3>
+          <p>Complete payment to register your account</p>
+        </div>
+      </div>
+
+      <div className="payment-method">
+        <label className="payment-label">SEND PAYMENT VIA</label>
+        <div className="easypaisa-card">
+          <div className="easypaisa-icon">E</div>
+          <div className="easypaisa-name">Easypaisa Rs.200</div>
+        </div>
+      </div>
+
+      <div className="account-info">
+        <div className="account-field">
+          <label>Account Number</label>
+          <div className="account-number">0313-5076017</div>
+        </div>
+
+        <div className="account-title-field">
+          <div className="account-badge">MK</div>
+          <div>
+            <label>Account Title</label>
+            <div className="account-name">Muhammad Afsar Khan</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="how-to-register">
+        <h4>How to register</h4>
+        <ol className="register-steps">
+          <li>Send payment to the Easypaisa number above</li>
+          <li>Take a screenshot of your payment receipt</li>
+          <li>Upload the screenshot during registration</li>
+        </ol>
+      </div>
+
+      <div className="registration-warning">
+        <span className="warning-icon">⚠️</span>
+        <p>Registration will only be approved after payment is verified</p>
+      </div>
+    </div>
+  );
+}
+
 export const RegistrationComponent = () => {
   return (
     <div>
       <Header />
       <div className="row">
         <div className="tournament-logo-col">
+          <PaymentRegistration />
           <img src={gsslLogo} alt="GSSL Logo" className="gssl-logo" />
           <h3>Golra Station Super League 2026</h3>
           <p>Register now to participate in the upcoming season!</p>
+          
         </div>
-        
+
         <div className="registration-col">
           <RegistrationForm />
         </div>
