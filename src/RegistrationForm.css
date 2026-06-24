@@ -354,3 +354,25 @@
   }
 }
 
+/* Success view */
+.registration-success{
+  padding: 20px;
+  text-align: center;
+}
+.registration-success h3{
+  color: #0f6e56;
+  margin-bottom: 8px;
+}
+.registration-success p{
+  margin: 0 0 12px 0;
+}
+.registration-success ul{
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px 0;
+}
+.registration-success li{
+  padding: 6px 0;
+  color: #2b4a40;
+}
+

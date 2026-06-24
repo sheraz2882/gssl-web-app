@@ -25,6 +25,16 @@ type FormState = {
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
 
+type SubmittedData = {
+  username: string;
+  cnicNumber: string;
+  mobilenumber: string;
+  documentId?: string;
+  pictureFileId?: string;
+  cnicFileId?: string;
+  receiptFileId?: string;
+};
+
 function RegistrationForm() {
   const [form, setForm] = useState<FormState>({
     name: '',
@@ -39,6 +49,8 @@ function RegistrationForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [submittedData, setSubmittedData] = useState<SubmittedData | null>(null);
 
   const validate = (): FormErrors => {
     const nextErrors: FormErrors = {};
@@ -101,17 +113,21 @@ function RegistrationForm() {
     }
   };
 
-  const uploadFile = async (file: File) => {
+  const uploadFile = async (file: File, username?: string) => {
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const safeUsername = username ? username.replace(/[^a-zA-Z0-9._-]/g, '_') : undefined;
+    const prefixedName = safeUsername ? `${safeUsername}_${safeName}` : safeName;
+    const fileToUpload = new File([file], prefixedName, { type: file.type });
     return storage.createFile(
       storageBucketId,
       ID.unique(),
-      file,
+      fileToUpload,
       [
-      Permission.read(Role.any()),
-      Permission.write(Role.any()),
-      Permission.update(Role.any()),
-      Permission.delete(Role.any()),
-    ]
+        Permission.read(Role.any()),
+        Permission.write(Role.any()),
+        Permission.update(Role.any()),
+        Permission.delete(Role.any()),
+      ],
     );
   };
 
@@ -128,13 +144,14 @@ function RegistrationForm() {
     setSubmitMessage(null);
 
     try {
+      const username = form.name.trim();
       const [pictureFile, cnicFile, receiptFile] = await Promise.all([
-        uploadFile(form.picture as File),
-        uploadFile(form.cnic as File),
-        uploadFile(form.receipt as File),
+        uploadFile(form.picture as File, username),
+        uploadFile(form.cnic as File, username),
+        uploadFile(form.receipt as File, username),
       ]);
 
-      await databases.createDocument(
+      const created = await databases.createDocument(
         databaseId,
         registrationCollectionId,
         ID.unique(),
@@ -150,7 +167,17 @@ function RegistrationForm() {
         },
       );
 
-      setSubmitMessage('Registration submitted successfully to Appwrite.');
+      // store submitted info and show success component instead of message
+      setSubmittedData({
+        username: form.name.trim(),
+        cnicNumber: form.cnicNumber.trim(),
+        mobilenumber: form.mobile.trim(),
+        documentId: created.$id,
+        pictureFileId: pictureFile.$id,
+        cnicFileId: cnicFile.$id,
+        receiptFileId: receiptFile.$id,
+      });
+      setSuccess(true);
       setForm({
         name: '',
         cnicNumber: '',
@@ -177,7 +204,10 @@ function RegistrationForm() {
   return (
     <div className="registration-form">
       <h2>Player Registration</h2>
-      <form onSubmit={handleSubmit} noValidate>
+      {success && submittedData ? (
+        <RegistrationSuccess data={submittedData} onClose={() => { setSuccess(false); setSubmittedData(null); }} />
+      ) : (
+        <form onSubmit={handleSubmit} noValidate>
         <label htmlFor="name">Name:</label>
         <input
           id="name"
@@ -304,11 +334,33 @@ function RegistrationForm() {
         </div>
         {errors.receipt && <div className="fieldError">{errors.receipt}</div>}
 
-        <button type="submit" className="submitButton" disabled={submitting}>
-          {submitting ? 'Submitting...' : 'Submit Registration'}
-        </button>
-      </form>
+          <button type="submit" className="submitButton" disabled={submitting}>
+            {submitting ? 'Submitting...' : 'Submit Registration'}
+          </button>
+        </form>
+      )}
       {submitMessage && <div className="submitMessage">{submitMessage}</div>}
+    </div>
+  );
+}
+
+type SuccessProps = {
+  data: NonNullable<SubmittedData>;
+  onClose: () => void;
+};
+
+function RegistrationSuccess({ data, onClose }: SuccessProps) {
+  return (
+    <div className="registration-success">
+      <h3>Registration Successful</h3>
+      <p>Thank you, <strong>{data.username}</strong>. Your registration ID is <em>{data.documentId}</em>.</p>
+      <ul>
+        <li>CNIC: {data.cnicNumber}</li>
+        <li>Mobile: {data.mobilenumber}</li>
+      </ul>
+      <button className="submitButton" onClick={onClose}>
+        Register another
+      </button>
     </div>
   );
 }
