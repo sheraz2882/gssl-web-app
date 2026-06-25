@@ -14,7 +14,6 @@ import './RegistrationForm.css';
 
 type FormState = {
   name: string;
-  cnicNumber: string;
   mobile: string;
   city: string;
   playerType: string;
@@ -27,7 +26,6 @@ type FormErrors = Partial<Record<keyof FormState, string>>;
 
 type SubmittedData = {
   username: string;
-  cnicNumber: string;
   mobilenumber: string;
   documentId?: string;
   pictureFileId?: string;
@@ -38,7 +36,6 @@ type SubmittedData = {
 function RegistrationForm() {
   const [form, setForm] = useState<FormState>({
     name: '',
-    cnicNumber: '',
     mobile: '',
     city: '',
     playerType: '',
@@ -57,10 +54,6 @@ function RegistrationForm() {
 
     if (!form.name.trim()) {
       nextErrors.name = 'Please enter your name.';
-    }
-
-    if (!form.cnicNumber.trim()) {
-      nextErrors.cnicNumber = 'Please enter your CNIC number.';
     }
 
     if (!form.mobile.trim()) {
@@ -157,7 +150,6 @@ function RegistrationForm() {
         ID.unique(),
         {
           username: form.name.trim(),
-          user_cnic: form.cnicNumber.trim(),
           mobilenumber: form.mobile.trim(),
           city: form.city,
           playerType: form.playerType,
@@ -170,7 +162,6 @@ function RegistrationForm() {
       // store submitted info and show success component instead of message
       setSubmittedData({
         username: form.name.trim(),
-        cnicNumber: form.cnicNumber.trim(),
         mobilenumber: form.mobile.trim(),
         documentId: created.$id,
         pictureFileId: pictureFile.$id,
@@ -180,7 +171,6 @@ function RegistrationForm() {
       setSuccess(true);
       setForm({
         name: '',
-        cnicNumber: '',
         mobile: '',
         city: '',
         playerType: '',
@@ -219,18 +209,6 @@ function RegistrationForm() {
           className={errors.name ? 'inputError' : ''}
         />
         {errors.name && <div className="fieldError">{errors.name}</div>}
-
-        <label htmlFor="cnicNumber">CNIC Number:</label>
-        <input
-          id="cnicNumber"
-          type="text"
-          name="cnicNumber"
-          value={form.cnicNumber}
-          onChange={handleChange}
-          placeholder="Enter your CNIC number"
-          className={errors.cnicNumber ? 'inputError' : ''}
-        />
-        {errors.cnicNumber && <div className="fieldError">{errors.cnicNumber}</div>}
 
         <label htmlFor="mobile">Mobile Number:</label>
         <input
@@ -355,7 +333,6 @@ function RegistrationSuccess({ data, onClose }: SuccessProps) {
       <h3>Registration Successful</h3>
       <p>Thank you, <strong>{data.username}</strong>. Your registration ID is <em>{data.documentId}</em>.</p>
       <ul>
-        <li>CNIC: {data.cnicNumber}</li>
         <li>Mobile: {data.mobilenumber}</li>
       </ul>
       <button className="submitButton" onClick={onClose}>
