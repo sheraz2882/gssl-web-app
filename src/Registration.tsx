@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Header } from './Home';
 import {
   databases,
@@ -45,9 +45,16 @@ function RegistrationForm() {
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitting, setSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [submittedData, setSubmittedData] = useState<SubmittedData | null>(null);
+  const formRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if ((submitting || apiError) && formRef.current) {
+      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [submitting, apiError]);
 
   const validate = (): FormErrors => {
     const nextErrors: FormErrors = {};
@@ -134,7 +141,7 @@ function RegistrationForm() {
     }
 
     setSubmitting(true);
-    setSubmitMessage(null);
+    setApiError(null);
 
     try {
       const username = form.name.trim();
@@ -181,7 +188,7 @@ function RegistrationForm() {
       setErrors({});
     } catch (error) {
       console.error('Appwrite submit error', error);
-      setSubmitMessage(
+      setApiError(
         error instanceof Error
           ? error.message
           : 'Unable to submit registration. Please try again.',
@@ -192,7 +199,7 @@ function RegistrationForm() {
   };
 
   return (
-    <div className="registration-form">
+    <div className="registration-form" ref={formRef}>
       <h2>Player Registration</h2>
       {success && submittedData ? (
         <RegistrationSuccess data={submittedData} onClose={() => { setSuccess(false); setSubmittedData(null); }} />
@@ -313,11 +320,36 @@ function RegistrationForm() {
         {errors.receipt && <div className="fieldError">{errors.receipt}</div>}
 
           <button type="submit" className="submitButton" disabled={submitting}>
-            {submitting ? 'Submitting...' : 'Submit Registration'}
+            Submit Registration
           </button>
         </form>
       )}
-      {submitMessage && <div className="submitMessage">{submitMessage}</div>}
+
+      {submitting && (
+        <div className="dialogOverlay">
+          <div className="dialogBox loadingDialog">
+            <div className="spinner" />
+            <h3>Submitting registration</h3>
+            <p>Please wait while we process your submission.</p>
+          </div>
+        </div>
+      )}
+
+      {apiError && (
+        <div className="dialogOverlay">
+          <div className="dialogBox errorDialog">
+            <h3>Submission failed</h3>
+            <p>{apiError}</p>
+            <button
+              type="button"
+              className="submitButton secondary"
+              onClick={() => setApiError(null)}
+            >
+              Try again
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -13,6 +13,10 @@
   box-shadow: 0 14px 40px rgba(15,110,86,0.08);
 }
 
+.registration-form {
+  position: relative;
+}
+
 .registration-form h2{
   margin-top: 0;
   margin-bottom: 18px;
@@ -149,6 +153,62 @@
 }
 .submitButton:hover {
   background-color: #0d5845;
+}
+
+.submitButton.secondary {
+  background-color: #d0473b;
+}
+
+.submitButton.secondary:hover {
+  background-color: #a93730;
+}
+
+.dialogOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.28);
+  z-index: 10;
+  padding: 18px;
+}
+
+.dialogBox {
+  width: min(100%, 420px);
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px 24px;
+  box-shadow: 0 22px 56px rgba(15, 110, 86, 0.18);
+  text-align: center;
+}
+
+.dialogBox h3 {
+  margin-top: 0;
+  margin-bottom: 14px;
+  color: #0f6e56;
+}
+
+.dialogBox p {
+  margin: 0;
+  color: #2b4a40;
+  line-height: 1.6;
+}
+
+.loadingDialog .spinner {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 18px;
+  border: 4px solid #e5e5e5;
+  border-top-color: #0f6e56;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Payment Registration Component */
