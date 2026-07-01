@@ -126,6 +126,86 @@
   }
 }
 
+.rules-section{
+  padding: 24px;
+  margin: 0 24px 24px;
+  background: #f4fcf9;
+  border: 1px solid #d6ece4;
+  border-radius: 20px;
+  box-shadow: 0 14px 32px rgba(15, 110, 86, 0.08);
+}
+
+.rules-header{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.rules-badge{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #0f6e56;
+  color: #ffffff;
+  font-size: 0.94rem;
+  font-weight: 700;
+}
+
+.rules-section h2{
+  margin: 0;
+  font-size: 1.75rem;
+  color: #0a4535;
+  line-height: 1.2;
+}
+
+.rules-list{
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+  list-style: decimal inside;
+  direction: rtl;
+  display: grid;
+  gap: 12px;
+}
+
+.rules-list li{
+  padding: 16px 18px;
+  background: #ffffff;
+  border: 1px solid #d9ebe3;
+  border-radius: 14px;
+  line-height: 1.8;
+  color: #174638;
+  font-size: 1rem;
+}
+
+.rules-list li::marker{
+  color: #0f6e56;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .rules-section{
+    margin: 0 16px 20px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .rules-section{
+    margin: 0 12px 18px;
+    padding: 16px;
+  }
+  .rules-section h2{
+    font-size: 1.45rem;
+  }
+}
+
 /* Registration section and button */
 .registration-section{
   display: flex;
